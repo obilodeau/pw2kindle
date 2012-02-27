@@ -1,0 +1,4 @@
+#!/usr/bin/perl
+
+use Pw2Kindle;
+Pw2Kindle->run;
