@@ -13,9 +13,21 @@ should ;)
 
 ## Installing
 
-### Requirements
+### Fedora
+
+    # yum install perl-MooseX-App-Cmd perl-libwww-perl \
+      perl-HTML-TreeBuilder-XPath perl-HTML-Selector-XPath perl-Test-Simple \
+      perl-parent perl-App-cpanminus
+    # cpanm Web::Query
+
+### Other distros / OSes
+
+Get all the detailed requirements listed below with cpanm.
+
+### Detailed requirements
 
 * MooseX::App::Cmd
-
-  * On fedora: yum install perl-MooseX-App-Cmd
-  * Otherwise: cpan MooseX::App::Cmd (?)
+* LWP::UserAgent
+* HTML::TreeBuilder::XPath
+* HTML::Selector::XPath
+* Web::Query
