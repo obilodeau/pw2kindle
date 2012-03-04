@@ -12,16 +12,27 @@ extends qw(MooseX::App::Cmd::Command);
 
 has username => (
     isa => "Str",
-    is  => "rw",
+    is  => "ro",
     required => 1,
     documentation => "instapaper username",
     traits => [ 'Getopt' ],
     cmd_aliases => 'u',
 );
 
+# TODO request szabgab a link like latest.html redirects or symlinks to latest issue
+# so I can make that parameter optional
+has issue => (
+    isa => "Int",
+    is  => "ro",
+    required => 1,
+    documentation => "Perl Weekly Issue #",
+    traits => [ 'Getopt' ],
+    cmd_aliases => 'i',
+);
+
 has dryrun => (
     isa => "Bool",
-    is  => "rw",
+    is  => "ro",
     documentation => "no harm done. only outputs URL about to be sent to instapaper",
 
     # the following trait allows for the fancier options below
@@ -55,12 +66,11 @@ sub execute {
 sub fetch {
     my ( $self ) = @_;
 
-    print "Fetching Perl Weekly issue...\n";
-    # TODO request szabgab a link like latest.html redirects or symlinks to latest issue
-    # TODO option to provide issue number
+    my $issue = $self->issue();
+    print "Fetching Perl Weekly issue #$issue...\n";
 
     my @articles;
-    wq('http://perlweekly.com/archive/13.html')
+    wq("http://perlweekly.com/archive/$issue.html")
         # <p class=entry> then <a ...> </p>
         ->find('p.entry>a')
         ->each(sub {
