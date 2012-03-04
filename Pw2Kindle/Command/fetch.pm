@@ -1,6 +1,8 @@
 package Pw2Kindle::Command::fetch;
 use Moose;
 use Web::Query;
+
+use Pw2Kindle::Model::Article;
  
 extends qw(MooseX::App::Cmd::Command);
 
@@ -34,16 +36,25 @@ sub fetch {
     print "Fetching Perl Weekly issue...\n";
     # TODO request szabgab a link like latest.html redirects or symlinks to latest issue
     # TODO option to provide issue number
+
+    my @articles;
     wq('http://perlweekly.com/archive/30.html')
         # <p class=entry> then <a ...> </p>
         ->find('p.entry>a')
         ->each(sub {
             my $i = shift;
+            my $article = Pw2Kindle::Model::Article->new( 
+                title => $_->text,
+                url => $_->attr('href'),
+            );
+
             # TODO verbose instead of --dry-run
-            printf("%d) %s\n%s\n\n", $i+1, $_->text, $_->attr('href')) if $self->dryrun;
-            # FIXME pushing title / links and return them
+            printf("%d) %s\n", $i+1, $article->toString()) if $self->dryrun;
+
+            push @articles, $article
     });
     print "Done!\n";
+    return @articles;
 }
 
 1;
