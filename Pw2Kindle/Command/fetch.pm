@@ -33,7 +33,7 @@ sub execute {
     # FIXME username as mandatory arg
     # FIXME prompt for the the password
     my $instapaper_ws = WWW::Instapaper::Client->new(
-        username        => 'username@domain.com'
+        username        => 'username@domain.com',
         password        => 'password',
     );
     $self->publish($instapaper_ws, $articles_ref);   
