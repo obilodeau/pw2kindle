@@ -2,6 +2,7 @@
 package Pw2Kindle::Command::fetch;
 use Moose;
 
+use Term::ReadKey;
 use Web::Query;
 use WWW::Instapaper::Client;
 
@@ -9,10 +10,19 @@ use Pw2Kindle::Model::Article;
  
 extends qw(MooseX::App::Cmd::Command);
 
+has username => (
+    isa => "Str",
+    is  => "rw",
+    required => 1,
+    documentation => "instapaper username",
+    traits => [ 'Getopt' ],
+    cmd_aliases => 'u',
+);
+
 has dryrun => (
     isa => "Bool",
     is  => "rw",
-    documentation => "no harm done. only outputs URL about to be parsed",
+    documentation => "no harm done. only outputs URL about to be sent to instapaper",
 
     # the following trait allows for the fancier options below
     traits    => [ 'Getopt' ],
@@ -30,11 +40,10 @@ sub execute {
     my $articles_ref = [ $self->fetch() ];
     return if $self->dryrun;
 
-    # FIXME username as mandatory arg
-    # FIXME prompt for the the password
+    my $password = $self->askPassword();
     my $instapaper_ws = WWW::Instapaper::Client->new(
-        username        => 'username@domain.com',
-        password        => 'password',
+        username        => $self->username(),
+        password        => $password,
     );
     $self->publish($instapaper_ws, $articles_ref);   
 }
@@ -51,7 +60,7 @@ sub fetch {
     # TODO option to provide issue number
 
     my @articles;
-    wq('http://perlweekly.com/archive/30.html')
+    wq('http://perlweekly.com/archive/13.html')
         # <p class=entry> then <a ...> </p>
         ->find('p.entry>a')
         ->each(sub {
@@ -84,14 +93,30 @@ sub publish {
         
         if (defined $result) {
             # TODO hide behind a verbose flag
-            print "URL added: ", $result->[0], "\n";  # http://instapaper.com/go/######
-            print "Title: ", $result->[1], "\n";      # Title of page added
+            # print "URL added: ", $result->[0], "\n";  # http://instapaper.com/go/######
+            print "Pushed article: ", $result->[1], "\n";
         }
         else {
             die "There was an error! Aborting operation. Error: " . $instapaper_ws->error . "\n";
         }
     }
     return 1;
+}
+
+=item askPassword
+
+=cut
+sub askPassword {
+    my ($self) = @_;
+
+    print "Please type in your instapaper password: ";
+    ReadMode('noecho');
+    my $password = ReadLine(0);
+    chomp($password);
+    ReadMode('restore');
+    print "\n";
+
+    return($password);
 }
 
 1;
