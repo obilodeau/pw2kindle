@@ -19,12 +19,17 @@ BEGIN {
 =over
 
 =cut
+my $test_user = 'username@domain.com';
+my $test_password = 'password';
 
 =item fetch tests
 
 =cut
 
-my ($command) = Pw2Kindle::Command::fetch->prepare(Pw2Kindle->new());
+my ($command) = Pw2Kindle::Command::fetch->prepare(
+    Pw2Kindle->new(), 
+    ('-u' => $test_user, '-i' => 30 ),
+);
 my @articles = $command->fetch();
 # TODO this is too limited
 ok(@articles, "Fetched something");
@@ -33,8 +38,8 @@ ok(@articles, "Fetched something");
 
 =cut
 my $instapaper_ws = WWW::Instapaper::Client->new(
-    username        => 'user@name.com', 
-    password        => 'password',
+    username        => $test_user,
+    password        => $test_password,
 );
 
 # setup a test article
