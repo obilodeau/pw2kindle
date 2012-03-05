@@ -2,7 +2,8 @@
 
 Perl Weekly to Kindle
 
-At the moment there's little to see here yet.
+At the moment there's little to see here yet. We're doing this through an 
+instapaper[1] account.
 
 ## Excuses
 
@@ -22,9 +23,13 @@ than it should ;)
 
 ### Other distros / OSes
 
-Get all the detailed requirements listed below with cpanm.
+Get all the detailed requirements (listed in their own section below) with cpanm.
 
 ## Detailed requirements
+
+Using:
+
+* Instapaper account
 
 Running:
 
@@ -40,3 +45,27 @@ Testing:
 
 * Test::More
 * Test::NoWarnings
+
+## Usage
+
+WARNING: This is really early and _will_ change!
+
+### Prerequisite
+
+Right now, the thing upload the specified Perl Weely issue to your 
+instapaper account. So, you need an instapaper account and you must configure
+it for kindle delivery.
+
+### Doing it
+
+Exact help is available from:
+
+    $ ./pw2kindle --help fetch
+
+But roughly, what you want is:
+
+    $ ./pw2kindle --username <instapaper_username> --issue <perl_weekly_issue>
+
+You'll be prompted for your instapaper password.
+
+[1]: http://www.instapaper.com/
