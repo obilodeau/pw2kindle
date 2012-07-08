@@ -7,6 +7,7 @@ use Web::Query;
 use WWW::Instapaper::Client;
 
 use Pw2Kindle::Model::Article;
+use Pw2Kindle::Model::PerlWeekly;
  
 extends qw(MooseX::App::Cmd::Command);
 
@@ -19,13 +20,10 @@ has username => (
     cmd_aliases => 'u',
 );
 
-# TODO request szabgab a link like latest.html redirects or symlinks to latest issue
-# so I can make that parameter optional
 has issue => (
     isa => "Int",
     is  => "ro",
-    required => 1,
-    documentation => "Perl Weekly Issue #",
+    documentation => "Perl Weekly Issue #. If not specified, we will fetch latest.",
     traits => [ 'Getopt' ],
     cmd_aliases => 'i',
 );
@@ -46,7 +44,7 @@ sub abstract { "performs fetch operation only" }
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-    my $articles_ref = [ $self->fetch() ];
+    my $articles_ref = [ $self->fetch( Pw2Kindle::Model::PerlWeekly->new() ) ];
     return if $self->dryrun;
 
     my $password = $self->askPassword();
@@ -62,15 +60,19 @@ sub execute {
 =cut
 # TODO I should ask szabgab how best to pull the stuff to avoid breakage
 sub fetch {
-    my ( $self ) = @_;
+    my ( $self, $periodical ) = @_;
 
-    my $issue = $self->issue();
-    print "Fetching Perl Weekly issue #$issue...\n";
+    my $issue;
+    if ( defined($self->issue) ) {
+        $issue = $self->issue;
+        printf("Fetching %s issue #%s...\n", $periodical->title, $issue);
+    } else {
+        printf("Fetching %s's latest issue...\n", $periodical->title, $issue);
+    }
 
     my @articles;
-    wq("http://perlweekly.com/archive/$issue.html")
-        # <p class=entry> then <a ...> </p>
-        ->find('p.entry>a')
+    wq($periodical->getUrl($issue))
+        ->find($periodical->article_link_css_selector)
         ->each(sub {
             my $i = shift;
             my $article = Pw2Kindle::Model::Article->new( 
