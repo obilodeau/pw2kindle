@@ -41,8 +41,6 @@ has dryrun => (
     cmd_aliases   => 'd',
 );
 
-__PACKAGE__->meta->make_immutable;
-
 sub abstract { "performs fetch operation only" }
 
 sub execute {
@@ -129,4 +127,19 @@ sub askPassword {
     return($password);
 }
 
+__PACKAGE__->meta->make_immutable;
+
+=head1 AUTHOR
+
+Olivier Bilodeau <olivier@bottomlesspit.org>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2012, Olivier Bilodeau <olivier@bottomlesspit.org>
+
+=head1 LICENSE
+
+Licensed under the BSD. See LICENSE for the full text.
+
+=cut
 1;
