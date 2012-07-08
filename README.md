@@ -64,7 +64,7 @@ Exact help is available from:
 
 But roughly, what you want is:
 
-    $ ./pw2kindle --username <instapaper_username> --issue <perl_weekly_issue>
+    $ ./pw2kindle fetch --username <instapaper_username> --issue <perl_weekly_issue>
 
 You'll be prompted for your instapaper password.
 
