@@ -18,7 +18,8 @@ than it should ;)
 
     # yum install perl-MooseX-App-Cmd perl-libwww-perl perl-LWP-Protocol-https \
       perl-HTML-TreeBuilder-XPath perl-HTML-Selector-XPath perl-Test-Simple \
-      perl-parent perl-App-cpanminus perl-Crypt-SSLeay perl-Class-Base
+      perl-parent perl-App-cpanminus perl-Crypt-SSLeay perl-Class-Base \
+      perl-File-Slurp
     # cpanm Web::Query WWW::Instapaper::Client
 
 ### Other distros / OSes
@@ -33,6 +34,7 @@ Using:
 
 Running:
 
+* File::Slurp
 * MooseX::App::Cmd
 * LWP::UserAgent
 * LWP::Protocol::https
@@ -67,5 +69,9 @@ But roughly, what you want is:
     $ ./pw2kindle fetch --username <instapaper_username> --issue <perl_weekly_issue>
 
 You'll be prompted for your instapaper password.
+
+### References
+
+* Information about the 'My Clippings' file: http://kindleworld.blogspot.ca/2010/01/q-on-kindles-my-clippings-file.html
 
 [1]: http://www.instapaper.com/
