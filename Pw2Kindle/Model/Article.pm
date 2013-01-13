@@ -23,6 +23,8 @@ sub toString {
    return sprintf("%s\n%s\n", $self->title(), $self->url());
 }
 
+__PACKAGE__->meta->make_immutable;
+
 =head1 AUTHOR
 
 Olivier Bilodeau <olivier@bottomlesspit.org>

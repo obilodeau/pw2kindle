@@ -1,7 +1,12 @@
 package Pw2Kindle::Model::Periodical;
 use Moose::Role;
 
-requires qw(title description homepage latest_url per_issue_url article_link_css_selector);
+requires qw(description homepage latest_url per_issue_url article_link_css_selector);
+
+has 'title' => (
+    is => 'ro',
+    isa => 'Str',
+);
 
 sub getUrl {
     my ($self, $issue) = @_;

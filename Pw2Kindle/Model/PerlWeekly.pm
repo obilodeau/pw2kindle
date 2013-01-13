@@ -1,12 +1,6 @@
 package Pw2Kindle::Model::PerlWeekly;
 use Moose;
 
-has 'title' => (
-    is => 'ro',
-    isa => 'Str',
-    default => 'Perl Weekly',
-);
-
 has 'description' => (
     is => 'ro',
     isa => 'Str',
@@ -39,6 +33,11 @@ has 'article_link_css_selector' => (
 );
 
 with 'Pw2Kindle::Model::Periodical';
+
+# TODO consider migrating all members to these 'augmented' base types
+has '+title' => ( default => 'Perl Weekly' );
+
+__PACKAGE__->meta->make_immutable;
 
 =head1 AUTHOR
 
