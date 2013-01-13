@@ -21,7 +21,7 @@ has 'collection' => (
 
 =head1 KINDLE ANNOTATION FORMAT
 
-Your typically annotation looks like:
+Your typical annotation looks like:
 
     Instapaper: Friday, Jul. 13 (Instapaper)
     - Highlight Loc. 758  | Added on Sunday, July 15, 2012, 03:44 AM
@@ -38,6 +38,7 @@ separator.
 has '_documentLocation' => (is => 'ro', isa => 'Int', default => 0);
 has '_metadataLocation' => (is => 'ro', isa => 'Int', default => 1);
 has '_contentLocation' => (is => 'ro', isa => 'Int', default => 3);
+has '_separator' => (is => 'ro', isa => 'Str', default => '==========');
 
 =head1 METHODS
 
@@ -55,7 +56,7 @@ for each annotation in the file.
 sub parseCollection {
     my ($self) = @_;
 
-    my @entries = split( '==========', read_file($self->filename) );
+    my @entries = split( $self->_separator, read_file($self->filename) );
 }
 
 sub _parseAnnotation {
