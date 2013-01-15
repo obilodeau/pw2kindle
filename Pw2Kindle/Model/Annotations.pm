@@ -13,8 +13,8 @@ has 'filename' => (
 
 has 'collection' => (
     is => 'rw',
-    isa => 'HashRef[Pw2Kindle::Model::Annotation]',
-    default => sub { {} },
+    isa => 'ArrayRef[Pw2Kindle::Model::Annotation]',
+    default => sub { [] },
 );
 
 # NOTE will probably need the concept of a 'device' soon
@@ -56,7 +56,18 @@ for each annotation in the file.
 sub parseCollection {
     my ($self) = @_;
 
-    my @entries = split( $self->_separator, read_file($self->filename) );
+    # TODO the scalar read_file() is suboptimal for large files.
+    #      lets revisit that
+    my @entries = split( $self->_separator, scalar read_file($self->filename) );
+
+    # not updating collection in place on purpose
+    my $annotations = [];
+    foreach my $annotation (@entries) {
+        # skip pure whitespace (like EOF)
+        next if $annotation =~ /^\s+$/;
+        push $annotations, $self->_parseAnnotation($annotation);
+    }
+    $self->collection($annotations);
 }
 
 sub _parseAnnotation {
@@ -90,7 +101,7 @@ Olivier Bilodeau <olivier@bottomlesspit.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2012, Olivier Bilodeau <olivier@bottomlesspit.org>
+Copyright (c) 2012, 2013, Olivier Bilodeau <olivier@bottomlesspit.org>
 
 =head1 LICENSE
 
