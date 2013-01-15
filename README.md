@@ -5,6 +5,10 @@ Perl Weekly to Kindle
 At the moment there's little to see here yet. We're doing this through an 
 [instapaper][1] account.
 
+Copyright 2012, 2013, Olivier Bilodeau <olivier@bottomlesspit.org>
+
+Licensed under the Simplified BSD license. See LICENSE for the full text.
+
 ## Excuses
 
 I took the opportunity of starting something from scratch to try one of the 
